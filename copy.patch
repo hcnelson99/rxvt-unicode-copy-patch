@@ -1,0 +1,29 @@
+diff -ru rxvt-unicode-9.22/src/command.C rxvt-unicode-9.22-patched/src/command.C
+--- rxvt-unicode-9.22/src/command.C	2016-01-18 14:35:08.000000000 -0500
++++ rxvt-unicode-9.22-patched/src/command.C	2017-02-02 11:12:22.120015982 -0500
+@@ -788,19 +788,22 @@
+             }
+         }
+ 
+-      if (ctrl && meta && (keysym == XK_c || keysym == XK_v))
++      if (ctrl && (keysym == XK_c || keysym == XK_v))
+         {
+           if (keysym == XK_v)
+-            selection_request (ev.time, Sel_Clipboard);
++            {
++              selection_request (ev.time, Sel_Clipboard);
++              return;
++            }
+           else if (selection.len > 0)
+             {
+               free (selection.clip_text);
+               selection.clip_text = rxvt_wcsdup (selection.text, selection.len);
+               selection.clip_len = selection.len;
+               selection_grab (CurrentTime, true);
++              return;
+             }
+ 
+-          return;
+         }
+ 
+ #if ENABLE_FRILLS || ISO_14755
