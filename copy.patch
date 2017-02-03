@@ -1,7 +1,7 @@
 diff -ru rxvt-unicode-9.22/src/command.C rxvt-unicode-9.22-patched/src/command.C
 --- rxvt-unicode-9.22/src/command.C	2016-01-18 14:35:08.000000000 -0500
-+++ rxvt-unicode-9.22-patched/src/command.C	2017-02-02 11:12:22.120015982 -0500
-@@ -788,19 +788,22 @@
++++ rxvt-unicode-9.22-patched/src/command.C	2017-02-02 14:31:45.643373419 -0500
+@@ -788,19 +788,27 @@
              }
          }
  
@@ -10,11 +10,14 @@ diff -ru rxvt-unicode-9.22/src/command.C rxvt-unicode-9.22-patched/src/command.C
          {
            if (keysym == XK_v)
 -            selection_request (ev.time, Sel_Clipboard);
+-          else if (selection.len > 0)
 +            {
 +              selection_request (ev.time, Sel_Clipboard);
 +              return;
 +            }
-           else if (selection.len > 0)
++          else if (selection.len > 0 &&
++              (selection.beg.row != selection.end.row
++               || selection.beg.col != selection.end.col))
              {
                free (selection.clip_text);
                selection.clip_text = rxvt_wcsdup (selection.text, selection.len);

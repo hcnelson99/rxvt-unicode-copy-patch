@@ -5,15 +5,16 @@
 # Contributor: dibblethewrecker dibblethewrecker.at.jiwe.dot.org
 
 pkgbase=rxvt-unicode
-pkgname=('rxvt-unicode' 'rxvt-unicode-terminfo')
+pkgname=('rxvt-unicode-copy-patch' 'rxvt-unicode-terminfo')
 pkgver=9.22
 pkgrel=2
 arch=('i686' 'x86_64')
 url='http://software.schmorp.de/pkg/rxvt-unicode.html'
 license=('GPL')
+conflicts=('rxvt-unicode')
 makedepends=('libxft' 'perl' 'startup-notification')
 source=(
-  "http://dist.schmorp.de/rxvt-unicode/$pkgname-$pkgver.tar.bz2"
+  "http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-$pkgver.tar.bz2"
   'urxvt.desktop'
   'urxvtc.desktop'
   'urxvt-tabbed.desktop'
@@ -23,10 +24,10 @@ md5sums=('93782dec27494eb079467dacf6e48185'
          'fec94dc986fa37ec380079d81de3e0b2'
          'fac55f0a8404c86dad3e702146762332'
          '8a5599197568c63720e282b9722a7990'
-         '1e129a1f22cfc662e8d6548f5025a28f')
+         'f5aa23c68b56639f5dbd14b7ab127ad9')
 
 build() {
-  cd $pkgname-$pkgver
+  cd rxvt-unicode-$pkgver
   # we disable smart-resize (FS#34807)
   # do not specify --with-terminfo (FS#46424)
   ./configure \
@@ -59,7 +60,7 @@ build() {
   make
 }
 
-package_rxvt-unicode() {
+package_rxvt-unicode-copy-patch() {
   pkgdesc='A unicode enabled rxvt-clone terminal emulator (urxvt)'
   depends=('rxvt-unicode-terminfo' 'libxft' 'perl' 'startup-notification')
   optdepends=('gtk2-perl: to use the urxvt-tabbed')
@@ -68,7 +69,7 @@ package_rxvt-unicode() {
   for _f in urxvt urxvtc urxvt-tabbed; do
     install -Dm644 $_f.desktop "$pkgdir/usr/share/applications/$_f.desktop"
   done
-  cd $pkgname-$pkgver
+  cd rxvt-unicode-$pkgver
 
   patch -p1 -i ../copy.patch
 
