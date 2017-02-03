@@ -24,7 +24,7 @@ md5sums=('93782dec27494eb079467dacf6e48185'
          'fec94dc986fa37ec380079d81de3e0b2'
          'fac55f0a8404c86dad3e702146762332'
          '8a5599197568c63720e282b9722a7990'
-         'f5aa23c68b56639f5dbd14b7ab127ad9')
+         '6e9f4963fa948efa3cecbfef7e89d31f')
 
 build() {
   cd rxvt-unicode-$pkgver

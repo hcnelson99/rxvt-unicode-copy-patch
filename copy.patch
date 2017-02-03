@@ -1,7 +1,7 @@
 diff -ru rxvt-unicode-9.22/src/command.C rxvt-unicode-9.22-patched/src/command.C
 --- rxvt-unicode-9.22/src/command.C	2016-01-18 14:35:08.000000000 -0500
-+++ rxvt-unicode-9.22-patched/src/command.C	2017-02-02 14:31:45.643373419 -0500
-@@ -788,19 +788,27 @@
++++ rxvt-unicode-9.22-patched/src/command.C	2017-02-03 07:46:03.863055987 -0500
+@@ -788,19 +788,23 @@
              }
          }
  
@@ -25,7 +25,7 @@ diff -ru rxvt-unicode-9.22/src/command.C rxvt-unicode-9.22-patched/src/command.C
                selection_grab (CurrentTime, true);
 +              return;
              }
- 
+-
 -          return;
          }
  
