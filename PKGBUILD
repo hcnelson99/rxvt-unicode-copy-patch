@@ -4,14 +4,17 @@
 # Contributor: tobias <tobias@archlinux.org>
 # Contributor: dibblethewrecker dibblethewrecker.at.jiwe.dot.org
 
-pkgbase=rxvt-unicode
-pkgname=('rxvt-unicode-copy-patch' 'rxvt-unicode-terminfo')
+_pkgname=rxvt-unicode
+pkgname=${_pkgname}-copy-patch
 pkgver=9.22
 pkgrel=2
+pkgdesc="rxvt-unicode patched to copy with C-c when text is selected"
 arch=('i686' 'x86_64')
 url='http://software.schmorp.de/pkg/rxvt-unicode.html'
 license=('GPL')
-conflicts=('rxvt-unicode')
+provides=($_pkgname)
+conflicts=($_pkgname)
+depends=('rxvt-unicode-terminfo')
 makedepends=('libxft' 'perl' 'startup-notification')
 source=(
   "http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-$pkgver.tar.bz2"
@@ -26,8 +29,14 @@ md5sums=('93782dec27494eb079467dacf6e48185'
          '8a5599197568c63720e282b9722a7990'
          '6e9f4963fa948efa3cecbfef7e89d31f')
 
+
+prepare() {
+  cd $_pkgname-$pkgver
+  patch -Np1 -i "${srcdir}/copy.patch"
+}
+
 build() {
-  cd rxvt-unicode-$pkgver
+  cd $_pkgname-$pkgver
   # we disable smart-resize (FS#34807)
   # do not specify --with-terminfo (FS#46424)
   ./configure \
@@ -69,9 +78,7 @@ package_rxvt-unicode-copy-patch() {
   for _f in urxvt urxvtc urxvt-tabbed; do
     install -Dm644 $_f.desktop "$pkgdir/usr/share/applications/$_f.desktop"
   done
-  cd rxvt-unicode-$pkgver
-
-  patch -p1 -i ../copy.patch
+  cd $_pkgname-$pkgver
 
   # workaround terminfo installation
   export TERMINFO="$srcdir/terminfo"
@@ -80,13 +87,6 @@ package_rxvt-unicode-copy-patch() {
   # install the tabbing wrapper ( requires gtk2-perl! )
   sed -i 's/\"rxvt\"/"urxvt"/' doc/rxvt-tabbed
   install -Dm 755 doc/rxvt-tabbed "$pkgdir/usr/bin/urxvt-tabbed"
-}
-
-package_rxvt-unicode-terminfo() {
-  pkgdesc='Terminfo files for urxvt'
-  conflict=('rxvt-unicode<=9.18-6')
-  install -dm 755 "$pkgdir/usr/share/"
-  mv terminfo "$pkgdir/usr/share/"
 }
 
 # vim:set ts=2 sw=2 et:
